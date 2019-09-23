@@ -1,8 +1,10 @@
 # install-upgrade-kernel
 install/upgrade huge or generic kernel and also run update-grub in the end
-To create the package type
+
+To download and create the package type:
 git clone https://github.com/djemos/install-upgrade-kernel.git
 cd install-upgrade-kernel
 fakeroot slkbuild -X
-to install the package
+
+To install the package type:
 sudo spkg install-upgrade-kernel-1.1.0-noarch-1dj.txz
