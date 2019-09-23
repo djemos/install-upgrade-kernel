@@ -1,0 +1,57 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-09-23 21:32+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/install-upgrade-kernel:62
+#, sh-format
+msgid "USAGE: install-upgrade-kernel [install|upgrade] [huge|generic]"
+msgstr ""
+
+#: src/install-upgrade-kernel:64
+#, sh-format
+msgid "   OPTIONS:"
+msgstr ""
+
+#: src/install-upgrade-kernel:65
+#, sh-format
+msgid "   install  Install huge or generic kernel"
+msgstr ""
+
+#: src/install-upgrade-kernel:66
+#, sh-format
+msgid "   upgrade  Upgrade huge or generic kernel removing the old one"
+msgstr ""
+
+#: src/install-upgrade-kernel:67
+#, sh-format
+msgid "   huge     Download huge kernel"
+msgstr ""
+
+#: src/install-upgrade-kernel:68
+#, sh-format
+msgid "   generic  Download generic kernel and also create an initrd"
+msgstr ""
+
+#: src/install-upgrade-kernel:78
+#, sh-format
+msgid "ERROR: Too many arguments"
+msgstr ""
+
+#: install-upgrade-kernel.desktop.in.h:1
+msgid "install upgrade kernel"
+msgstr ""

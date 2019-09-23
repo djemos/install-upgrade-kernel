@@ -1,0 +1,188 @@
+#!/bin/bash
+# Gettext internationalization
+#
+# Copyright 2019  Dimitris Tzemos, GR
+#!/bin/bash
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+###################################################################
+####                      install-upgrade-kernel               ####
+###################################################################
+# script to create kernel module package and initrd 			  #
+# when kernel upgrade and copy to live usb                        #
+# This script created for slackel/salix                           #
+#                                                                 #
+###################################################################
+
+AUTHOR='Dimitris Tzemos - dijemos@gmail.com'
+LICENCE='GPL v3+'
+SCRIPT=$(basename "$0")
+SCRIPT=$(readlink -f "$SCRIPT")
+VER=1.0
+
+init(){
+		
+		if [ "$UID" != "0" ]; then
+			echo "You need to be root to run this"
+			exit 1
+		fi
+
+        # Translations only work with utf8 locales
+        if [ ! `echo $LANG | grep -i utf` ]; then
+                LANG=C
+        fi
+
+        # Gettext internationalization
+        export TEXTDOMAIN="install-upgrade-kernel"
+        export TEXTDOMAINDIR="/usr/share/locale"
+        . gettext.sh
+        
+        # Path needs to be extended in case you're only half a root :)
+        export PATH="/usr/sbin:/sbin:${PATH}"
+}
+
+usage(){
+        echo "`eval_gettext 'USAGE: install-upgrade-kernel [install|upgrade] [huge|generic]'`"
+        echo
+        echo "`eval_gettext '   OPTIONS:'`"
+        echo "`eval_gettext '   install  Install huge or generic kernel'`"
+        echo "`eval_gettext '   upgrade  Upgrade huge or generic kernel removing the old one'`"
+        echo "`eval_gettext '   huge     Download huge kernel'`"
+        echo "`eval_gettext '   generic  Download generic kernel and also create an initrd'`"
+        exit 1
+}
+
+# Check which options are used from the command line
+checkoptions(){
+        flag=$1
+        flagr=$2
+        
+		if [ $# -gt 2 ] ; then
+				echo "`eval_gettext 'ERROR: Too many arguments'`"
+				usage
+		fi
+		
+        if [[ $flag = "install" ]]; then
+			export flag="install"
+        elif [[ $flag = "upgrade" ]]; then
+			export flag="upgrade"
+		else
+		   usage
+        fi
+ 
+        #if switch is unknown or if asking for help
+		if [[ $flagr = "help" ]] || [[ $flag = "h" ]]; then
+			usage  
+		elif [[ $flagr = "huge" ]]; then
+			export flagr="huge"
+	    elif [[ $flagr = "generic" ]]; then
+			export flagr="generic"
+		else
+			usage
+		fi		
+}
+execute_script(){
+if [ -z "$startdir" ]; then
+	startdir="$(pwd)"
+	export startdir
+fi
+
+#moduleslist="squashfs:overlay:loop:xhci-pci:ohci-pci:ehci-pci:xhci-hcd:uhci-hcd:ehci-hcd:mmc-core:mmc-block:sdhci:sdhci-pci:sdhci-acpi:usb-storage:hid:usbhid:i2c-hid:hid-generic:hid-apple:hid-asus:hid-cherry:hid-logitech:hid-logitech-dj:hid-logitech-hidpp:hid-lenovo:hid-microsoft:hid_multitouch:jbd2:mbcache:crc32c-intel:ext3:ext4:isofs:fat:nls_cp437:nls_iso8859-1:msdos:vfat:ntfs"
+moduleslist="xhci-pci:ohci-pci:ehci-pci:xhci-hcd:uhci-hcd:ehci-hcd:hid:usbhid:i2c-hid:hid_generic:hid-asus:hid-cherry:hid-logitech:hid-logitech-dj:hid-logitech-hidpp:hid-lenovo:hid-microsoft:hid_multitouch:jbd2:mbcache:crc32c-intel:ext4"
+#clear
+#packages_dir contain packages.txz
+packagesdirectory=$startdir/packages_dir
+mkdir -p $packagesdirectory
+sudo slapt-get --clean
+if [ "$flagr" == "generic" ]; then
+	if [ `uname -m` == "x86_64" ]; then
+		slapt-get -i --reinstall -d kernel-headers kernel-generic kernel-modules
+	else
+		slapt-get -i --reinstall -d kernel-headers kernel-generic kernel-generic-smp kernel-modules kernel-modules-smp
+	fi
+elif [ "$flagr" == "huge" ]; then
+	if [ `uname -m` == "x86_64" ]; then
+		slapt-get -i --reinstall -d kernel-headers kernel-huge kernel-modules
+	else
+		slapt-get -i --reinstall -d kernel-headers kernel-huge kernel-huge-smp kernel-modules kernel-modules-smp
+	fi 
+fi
+
+if [ `uname -m` == "x86_64" ]; then
+	cp /var/slapt-get/slackware64/a/* $packagesdirectory
+	cp /var/slapt-get/slackware64/d/* $packagesdirectory
+	if [ "$flagr" == "huge" ]; then
+		cd $packagesdirectory
+		f=`ls kernel-huge*.txz`
+		kv=`echo $f | cut -c 13-19`
+	elif [ "$flagr" == "generic" ]; then
+		cd $packagesdirectory
+		f=`ls kernel-generic*.txz`
+		kv=`echo $f | cut -c 16-22`
+		cd $startdir
+	fi
+else
+	cp /var/slapt-get/slackware/a/* $packagesdirectory
+	cp /var/slapt-get/slackware/d/* $packagesdirectory
+	if [ "$flagr" == "huge" ]; then
+		cd $packagesdirectory
+		f=`ls kernel-huge-smp*.txz`
+		kv=`echo $f | cut -c 17-23`
+		cd $startdir
+	elif [ "$flagr" == "generic" ]; then
+		cd $packagesdirectory
+		f=`ls kernel-generic-smp*.txz`
+		kv=`echo $f | cut -c 19-25`
+		cd $startdir
+	fi
+fi
+#kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | sed s/^[^0-9]*//`
+if [ "$flag" == "install" ]; then
+	installpkg $packagesdirectory/*
+	if [ "$flagr" == "generic" ]; then
+		echo "creating /boot/initrd-${kv}.gz" 
+		mkinitrd -c -o /boot/initrd-${kv}.gz -k $kv -m $moduleslist >/dev/null 2>&1
+		rm -rf /boot/initrd-tree/
+	else
+		rm 	/boot/initrd*-${kv}.gz >/dev/null 2>&1
+	fi
+	rm /boot/vmlinuz-huge /boot/vmlinuz-huge-smp /boot/vmlinuz-generic >/dev/null 2>&1
+	echo "upadeting grub"
+	update-grub
+	rm -rf $packagesdirectory
+elif [ "$flag" == "upgrade" ]; then
+	upgradepkg $packagesdirectory/*
+	if [ "$flagr" == "generic" ];then
+		echo "creating /boot/initrd-${kv}.gz" 
+		mkinitrd -c -o /boot/initrd-${kv}.gz -k $kv -m $moduleslist >/dev/null 2>&1
+		rm -rf /boot/initrd-tree/
+	else
+		rm 	/boot/initrd*-${kv}.gz >/dev/null 2>&1
+	fi
+	rm /boot/vmlinuz-huge /boot/vmlinuz-huge-smp /boot/vmlinuz-generic >/dev/null 2>&1
+	echo "upadeting grub"
+	update-grub
+	rm -rf $packagesdirectory
+fi
+}
+
+init
+checkoptions $@
+execute_script
