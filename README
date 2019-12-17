@@ -12,7 +12,7 @@ cd install-upgrade-kernel
 fakeroot slkbuild -X
 
 To install the package type:
-sudo spkg install-upgrade-kernel-1.1.0-noarch-1dj.txz
+sudo spkg install-upgrade-kernel-1.1.0-noarch-2dj.txz
 
 Running
 sudo install-upgrade-kernel with no parameters will get the following help screen.
