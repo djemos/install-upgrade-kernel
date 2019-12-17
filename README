@@ -1,6 +1,11 @@
 # install-upgrade-kernel
 install/upgrade huge or generic kernel and also run update-grub in the end
 
+"install-upgrade-kernel is a script for installing, updating,"
+"kernel packages on all versions of salix/slackel, including"
+"stable and current slackware version, without removing the "
+"previous kernel if you run it with install parameter"
+
 To download and create the package type:
 git clone https://github.com/djemos/install-upgrade-kernel.git
 cd install-upgrade-kernel
@@ -8,3 +13,14 @@ fakeroot slkbuild -X
 
 To install the package type:
 sudo spkg install-upgrade-kernel-1.1.0-noarch-1dj.txz
+
+Running
+sudo install-upgrade-kernel with no parameters will get the following help screen.
+
+USAGE: install-upgrade-kernel [install|upgrade] [huge|generic]
+
+OPTIONS:
+install Install huge or generic kernel
+upgrade Upgrade huge or generic kernel removing the old one
+huge Download huge kernel
+generic Download generic kernel and also create an initrd
