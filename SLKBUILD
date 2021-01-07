@@ -1,8 +1,8 @@
 #Packager: Dimitris Tzemos <dijemos~at~gmail~dot~com>
 
 pkgname=install-upgrade-kernel
-pkgver=1.1.0
-pkgrel=3dj
+pkgver=1.1.1
+pkgrel=1dj
 arch=noarch
 source=(install-upgrade-kernel-$pkgver.tar.gz)
 docs=("readme" "copying" "authors")
