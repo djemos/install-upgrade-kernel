@@ -12,7 +12,7 @@ cd install-upgrade-kernel
 fakeroot slkbuild -X
 
 To install the package type:
-sudo spkg install-upgrade-kernel-1.1.1-noarch-1dj.txz
+sudo spkg install-upgrade-kernel-2.0-noarch-1dj.txz
 
 Running
 sudo install-upgrade-kernel with no parameters will get the following help screen.
@@ -25,7 +25,7 @@ upgrade Upgrade huge or generic kernel removing the old one
 huge Download huge kernel
 generic Download generic kernel and also create an initrd
 
-Copyright (C) 2020 Dimitris Tzemos <dijemos@gmail.com>
+Copyright (C) 2022 Dimitris Tzemos <dijemos@gmail.com>
 This program is free software: you can redistribute it and/or modify it under the terms 
 of the GNU General Public License as published by the Free Software Foundation, 
 either version 2 of the License, or (at your option) any later version.
