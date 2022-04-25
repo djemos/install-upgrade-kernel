@@ -1,7 +1,7 @@
 #Packager: Dimitris Tzemos <dijemos~at~gmail~dot~com>
 
 pkgname=install-upgrade-kernel
-pkgver=1.1.1
+pkgver=2.0
 pkgrel=1dj
 arch=noarch
 source=(install-upgrade-kernel-$pkgver.tar.gz)
