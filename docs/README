@@ -1,0 +1,6 @@
+install-upgrade-kernel is a script that make easy to install kernel packages 
+without removing the previous kernel packages and 
+upgrading grub menus boot loader.
+
+install-upgarade-kernel can be used on any slackware or slackware based
+system. 

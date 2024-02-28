@@ -7,8 +7,11 @@ install/upgrade huge or generic kernel and also run update-grub in the end
 "previous kernel if you run it with install parameter"
 
 To download and create the package type:
+mkdir build 
+cd build 
 git clone https://github.com/djemos/install-upgrade-kernel.git
-cd install-upgrade-kernel
+mv install-upgrade-kernel/SLKBUILD ./
+tar -cvjSf install-upgrade-kernel.tar.bz2 install-upgrade-kernel
 fakeroot slkbuild -X
 
 To install the package type:

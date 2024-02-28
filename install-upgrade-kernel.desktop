@@ -1,0 +1,9 @@
+[Desktop Entry]
+Categories=Application;System
+Exec=install-upgrade-kernel
+Icon=install-upgrade-kernel
+Name=install upgrade kernel
+Terminal=true
+Type=Application
+Version=2.0
+
