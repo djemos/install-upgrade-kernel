@@ -1,5 +1,5 @@
 # install-upgrade-kernel
-install/upgrade huge or generic kernel and also run update-grub in the end
+install/upgrade generic kernel and also run update-grub in the end
 
 "install-upgrade-kernel is a script for installing, updating,"
 "kernel packages on all versions of salix/slackel, including"
@@ -23,9 +23,8 @@ sudo install-upgrade-kernel with no parameters will get the following help scree
 USAGE: install-upgrade-kernel [install|upgrade] [huge|generic]
 
 OPTIONS:
-install Install huge or generic kernel
-upgrade Upgrade huge or generic kernel removing the old one
-huge Download huge kernel
+install Install generic kernel
+upgrade Upgrade generic kernel removing the old one
 generic Download generic kernel and also create an initrd
 
 Copyright (C) 2020 - 2024 Dimitris Tzemos <dijemos@gmail.com>
