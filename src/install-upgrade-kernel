@@ -1,7 +1,7 @@
 #!/bin/bash
 # Gettext internationalization
 #
-# Copyright 2022 Dimitris Tzemos, GR
+# Copyright 2022  Dimitris Tzemos, GR
 #!/bin/bash
 # All rights reserved.
 #
@@ -22,7 +22,7 @@
 #  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-###################################################################
+########################################### ########################
 ####                      install-upgrade-kernel               ####
 ###################################################################
 # script to install/upgrade new kernel images                     #
@@ -36,7 +36,7 @@ AUTHOR='Dimitris Tzemos - dijemos@gmail.com'
 LICENCE='GPL v3+'
 SCRIPT=$(basename "$0")
 SCRIPT=$(readlink -f "$SCRIPT")
-VER=2.0
+VER=4.0
 
 init(){
 
@@ -60,12 +60,11 @@ init(){
 }
 
 usage(){
-        echo "`eval_gettext 'USAGE: install-upgrade-kernel [install|upgrade] [huge|generic]'`"
+        echo "`eval_gettext 'USAGE: install-upgrade-kernel [install|upgrade] [generic]'`"
         echo
         echo "`eval_gettext '   OPTIONS:'`"
-        echo "`eval_gettext '   install  Install huge or generic kernel'`"
-        echo "`eval_gettext '   upgrade  Upgrade huge or generic kernel removing the old one'`"
-        echo "`eval_gettext '   huge     Download huge kernel'`"
+        echo "`eval_gettext '   install  Install generic kernel'`"
+        echo "`eval_gettext '   upgrade  Upgrade generic kernel removing the old one'`"
         echo "`eval_gettext '   generic  Download generic kernel and also create an initrd'`"
         exit 1
 }
@@ -91,8 +90,6 @@ checkoptions(){
         #if switch is unknown or if asking for help
 		if [[ $flagr = "help" ]] || [[ $flag = "h" ]]; then
 			usage
-		elif [[ $flagr = "huge" ]]; then
-			export flagr="huge"
 	    elif [[ $flagr = "generic" ]]; then
 			export flagr="generic"
 		else
@@ -116,32 +113,19 @@ sudo slapt-get --clean
 sudo slapt-get -u
 if [ "$flagr" == "generic" ]; then
 	if [ `uname -m` == "x86_64" ]; then
-		slapt-get -i --reinstall -d kernel-headers kernel-generic kernel-modules
+		slapt-get -i --reinstall -d kernel-headers kernel-generic
 	else
-		slapt-get -i --reinstall -d kernel-headers kernel-generic kernel-generic-smp kernel-modules kernel-modules-smp
-	fi
-elif [ "$flagr" == "huge" ]; then
-	if [ `uname -m` == "x86_64" ]; then
-		slapt-get -i --reinstall -d kernel-headers kernel-huge kernel-modules
-	else
-		slapt-get -i --reinstall -d kernel-headers kernel-huge kernel-huge-smp kernel-modules kernel-modules-smp
+		slapt-get -i --reinstall -d kernel-headers kernel-generic
 	fi
 fi
 
 if [ `uname -m` == "x86_64" ]; then
 	cp `find /var/slapt-get/ -type f -name "kernel-headers*"` $packagesdirectory
-	cp `find /var/slapt-get/ -type f -name "kernel-modules*"` $packagesdirectory
 	if [ "$flagr" == "generic" ]; then
 		cp `find /var/slapt-get/ -type f -name "kernel-generic*"` $packagesdirectory
-	elif  [ "$flagr" == "huge" ]; then
-		cp `find /var/slapt-get/ -type f -name "kernel-huge*"` $packagesdirectory
 	fi	
 	
-	if [ "$flagr" == "huge" ]; then
-		cd $packagesdirectory
-		f=`ls kernel-huge*.txz`
-		kv=`echo $f | cut -d'-' -f 3`
-	elif [ "$flagr" == "generic" ]; then
+	if [ "$flagr" == "generic" ]; then
 		cd $packagesdirectory
 		f=`ls kernel-generic*.txz`
 		kv=`echo $f | cut -d'-' -f 3`
@@ -149,22 +133,14 @@ if [ `uname -m` == "x86_64" ]; then
 	fi
 else
 	cp `find /var/slapt-get/ -type f -name "kernel-headers*"` $packagesdirectory
-	cp `find /var/slapt-get/ -type f -name "kernel-modules*"` $packagesdirectory
 	if [ "$flagr" == "generic" ]; then
 		cp `find /var/slapt-get/ -type f -name "kernel-generic*"` $packagesdirectory
-	elif [ "$flagr" == "huge" ]; then
-		cp `find /var/slapt-get/ -type f -name "kernel-huge*"` $packagesdirectory
 	fi
 	
-	if [ "$flagr" == "huge" ]; then
+	if [ "$flagr" == "generic" ]; then
 		cd $packagesdirectory
-		f=`ls kernel-huge-smp*.txz`
-		kv=`echo $f | cut -d'-' -f 4`
-		cd $startdir
-	elif [ "$flagr" == "generic" ]; then
-		cd $packagesdirectory
-		f=`ls kernel-generic-smp*.txz`
-		kv=`echo $f | cut -d'-' -f 4`
+		f=`ls kernel-generic*.txz`
+		kv=`echo $f | cut -d'-' -f 3`
 		cd $startdir
 	fi
 fi
@@ -175,13 +151,14 @@ fi
 
 if [ "$flag" == "install" ]; then
 	installpkg $packagesdirectory/*
-	kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | sed s/^[^0-9]*//`
+	#kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | sed s/^[^0-9]*//`
+	kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | cut -f2 -d'-'`
 	if [ "$flagr" == "generic" ]; then
 		echo "creating /boot/initrd-${kv}.gz"
-		mkinitrd -c -o /boot/initrd-${kv}.gz -k $kv -f ext4 -m $moduleslist >/dev/null 2>&1
+		mkinitrd -c -o /boot/initrd-${kv}-generic.gz -k $kv -f ext4 -m $moduleslist >/dev/null 2>&1
 		rm -rf /boot/initrd-tree/
 	else
-		rm 	/boot/initrd*-${kv}.gz >/dev/null 2>&1
+		rm 	/boot/initrd*.gz >/dev/null 2>&1
 	fi
 	rm /boot/vmlinuz-huge /boot/vmlinuz-huge-smp /boot/vmlinuz-generic >/dev/null 2>&1
 	if [ -f /usr/sbin/update-grub ]; then
@@ -191,13 +168,14 @@ if [ "$flag" == "install" ]; then
 	rm -rf $packagesdirectory
 elif [ "$flag" == "upgrade" ]; then
 	upgradepkg $packagesdirectory/*
-	kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | sed s/^[^0-9]*//`
+	#kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | sed s/^[^0-9]*//`
+	kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | cut -f2 -d'-'`
 	if [ "$flagr" == "generic" ];then
 		echo "creating /boot/initrd-${kv}.gz"
-		mkinitrd -c -o /boot/initrd-${kv}.gz -k $kv -f ext4 -m $moduleslist >/dev/null 2>&1
+		mkinitrd -c -o /boot/initrd-${kv}-generic.gz -k $kv -f ext4 -m $moduleslist >/dev/null 2>&1
 		rm -rf /boot/initrd-tree/
 	else
-		rm 	/boot/initrd*-${kv}.gz >/dev/null 2>&1
+		rm 	/boot/initrd*.gz >/dev/null 2>&1
 	fi
 	rm /boot/vmlinuz-huge /boot/vmlinuz-huge-smp /boot/vmlinuz-generic >/dev/null 2>&1
 

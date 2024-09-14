@@ -8,18 +8,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-10 21:57+0200\n"
+"POT-Creation-Date: 2024-09-13 14:10+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/install-upgrade-kernel:63
 #, sh-format
-msgid "USAGE: install-upgrade-kernel [install|upgrade] [huge|generic]"
+msgid "USAGE: install-upgrade-kernel [install|upgrade] [generic]"
 msgstr ""
 
 #: src/install-upgrade-kernel:65
@@ -29,25 +29,20 @@ msgstr ""
 
 #: src/install-upgrade-kernel:66
 #, sh-format
-msgid "   install  Install huge or generic kernel"
+msgid "   install  Install generic kernel"
 msgstr ""
 
 #: src/install-upgrade-kernel:67
 #, sh-format
-msgid "   upgrade  Upgrade huge or generic kernel removing the old one"
+msgid "   upgrade  Upgrade generic kernel removing the old one"
 msgstr ""
 
 #: src/install-upgrade-kernel:68
 #, sh-format
-msgid "   huge     Download huge kernel"
-msgstr ""
-
-#: src/install-upgrade-kernel:69
-#, sh-format
 msgid "   generic  Download generic kernel and also create an initrd"
 msgstr ""
 
-#: src/install-upgrade-kernel:79
+#: src/install-upgrade-kernel:78
 #, sh-format
 msgid "ERROR: Too many arguments"
 msgstr ""
