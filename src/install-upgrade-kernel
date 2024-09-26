@@ -1,7 +1,7 @@
 #!/bin/bash
 # Gettext internationalization
 #
-# Copyright 2022  Dimitris Tzemos, GR
+# Copyright 2022-2024 Dimitris Tzemos, GR
 #!/bin/bash
 # All rights reserved.
 #
@@ -22,7 +22,7 @@
 #  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-########################################### ########################
+########################################### #######################
 ####                      install-upgrade-kernel               ####
 ###################################################################
 # script to install/upgrade new kernel images                     #
@@ -154,7 +154,7 @@ if [ "$flag" == "install" ]; then
 	#kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | sed s/^[^0-9]*//`
 	kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | cut -f2 -d'-'`
 	if [ "$flagr" == "generic" ]; then
-		echo "creating /boot/initrd-${kv}.gz"
+		echo "creating /boot/initrd-${kv}-${flagr}.gz"
 		mkinitrd -c -o /boot/initrd-${kv}-generic.gz -k $kv -f ext4 -m $moduleslist >/dev/null 2>&1
 		rm -rf /boot/initrd-tree/
 	else
@@ -171,7 +171,7 @@ elif [ "$flag" == "upgrade" ]; then
 	#kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | sed s/^[^0-9]*//`
 	kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | cut -f2 -d'-'`
 	if [ "$flagr" == "generic" ];then
-		echo "creating /boot/initrd-${kv}.gz"
+		echo "creating /boot/initrd-${kv}-${flagr}.gz"
 		mkinitrd -c -o /boot/initrd-${kv}-generic.gz -k $kv -f ext4 -m $moduleslist >/dev/null 2>&1
 		rm -rf /boot/initrd-tree/
 	else
