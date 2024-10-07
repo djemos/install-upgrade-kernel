@@ -71,12 +71,20 @@ usage(){
 
 # Check which options are used from the command line
 checkoptions(){
+ROOTPART=$(lsblk -l -o name,mountpoint| grep /$|sed "s,\([^[:space:]]*\).*,/dev/\1,")
+ROOTNAME=$(echo $ROOTPART|sed "s,/dev/,,")
+ROOTUUID=$(lsblk -l -o name,uuid|grep ^$ROOTNAME|sed "s/[^ ]*[[:space:]]*//")
+export FSTYPE=$(lsblk -l -o name,fstype|grep ^$ROOTNAME|sed "s/[^ ]*[[:space:]]*//")
+ROOTDEVICE=/dev/$(lsblk -l -o name,pkname|grep ^$ROOTNAME|sed "s/[^ ]*[[:space:]]*//")
+
         flag=$1
         flagr=$2
+        flagw=$3
+        flagf=$4
 
-		if [ $# -gt 2 ] ; then
-				echo "`eval_gettext 'ERROR: Too many arguments'`"
-				usage
+		if [ $# -gt 4 ] ; then
+			echo "`eval_gettext 'ERROR: Too many arguments'`"
+			usage
 		fi
 
         if [[ $flag = "install" ]]; then
@@ -95,6 +103,33 @@ checkoptions(){
 		else
 			usage
 		fi
+		
+ if [ -z "$flagw" ]; then
+			export WAIT=10
+	   else
+	        export WAIT=$flagw
+	   fi
+
+       if [ -z "$flagf" ]; then
+			#export flagf="ext4"
+			export flagf=$FSTYPE
+	   elif [ "$flagf" = "ext2" ]; then
+			export flagf="ext2"
+		elif [ "$flagf" = "ext3" ]; then
+			export flagf="ext3"
+		elif [ "$flagf" = "ext4" ]; then
+			export flagf="ext4"
+		elif [ "$flagf" = "btrfs" ]; then
+			export flagf="btrfs"
+		elif [ "$flagf" = "jfs" ]; then
+			export flagf="jfs"
+		elif [ "$flagf" = "reiserfs" ]; then
+			export flagf="reiserfs"
+		elif [ "$flagf" = "xfs" ]; then
+			export flagf="xfs"
+		else
+			usage
+		fi		
 }
 execute_script(){
 if [ -z "$startdir" ]; then
@@ -149,13 +184,17 @@ if [ -f /etc/lsb-release ]; then
 	sed -i "s/DISTRIB_DESCRIPTION=.*/DISTRIB_DESCRIPTION='Slackel Linux $kv'/" /etc/lsb-release
 fi
 
+if ! [ -f /etc/slackel-version ]; then
+	echo "Slackel 7.7" > /etc/slackel-version
+fi
+
 if [ "$flag" == "install" ]; then
 	installpkg $packagesdirectory/*
 	#kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | sed s/^[^0-9]*//`
 	kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | cut -f2 -d'-'`
 	if [ "$flagr" == "generic" ]; then
 		echo "creating /boot/initrd-${kv}-${flagr}.gz"
-		mkinitrd -c -o /boot/initrd-${kv}-generic.gz -k $kv -f ext4 -m $moduleslist >/dev/null 2>&1
+		mkinitrd -c -f $flagf -u -w $WAIT -o /boot/initrd-${kv}-generic.gz -r UUID=$ROOTUUID -k $kv  -m $moduleslist >/dev/null 2>&1
 		rm -rf /boot/initrd-tree/
 	else
 		rm 	/boot/initrd*.gz >/dev/null 2>&1
@@ -172,7 +211,7 @@ elif [ "$flag" == "upgrade" ]; then
 	kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | cut -f2 -d'-'`
 	if [ "$flagr" == "generic" ];then
 		echo "creating /boot/initrd-${kv}-${flagr}.gz"
-		mkinitrd -c -o /boot/initrd-${kv}-generic.gz -k $kv -f ext4 -m $moduleslist >/dev/null 2>&1
+		mkinitrd -c -f $flagf -u -w $WAIT -o /boot/initrd-${kv}-generic.gz -r UUID=$ROOTUUID -k $kv  -m $moduleslist >/dev/null 2>&1
 		rm -rf /boot/initrd-tree/
 	else
 		rm 	/boot/initrd*.gz >/dev/null 2>&1

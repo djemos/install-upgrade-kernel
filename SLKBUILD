@@ -2,7 +2,7 @@
 
 pkgname=install-upgrade-kernel
 pkgver=3.0
-pkgrel=3dj
+pkgrel=4dj
 arch=noarch
 source=(install-upgrade-kernel-$pkgver.tar.gz)
 docs=("readme" "copying" "authors")
