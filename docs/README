@@ -1,6 +1,37 @@
-install-upgrade-kernel is a script that make easy to install kernel packages 
-without removing the previous kernel packages and 
-upgrading grub menus boot loader.
+# install-upgrade-kernel
+install/upgrade generic kernel and also run update-grub in the end
 
-install-upgarade-kernel can be used on any slackware or slackware based
-system. 
+"install-upgrade-kernel is a script for installing, updating,"
+"kernel packages on all versions of salix/slackel, including"
+"stable and current slackware version, without removing the "
+"previous kernel if you run it with install parameter"
+
+To download and create the package type:
+mkdir build 
+cd build 
+git clone https://github.com/djemos/install-upgrade-kernel.git
+mv install-upgrade-kernel/SLKBUILD ./
+tar -cvjSf install-upgrade-kernel.tar.bz2 install-upgrade-kernel
+fakeroot slkbuild -X
+
+To install the package type:
+sudo spkg install-upgrade-kernel-3.0-noarch-6dj.txz
+
+Running
+sudo install-upgrade-kernel with no parameters will get the following help screen.
+
+USAGE: install-upgrade-kernel [install|upgrade] [huge|generic]
+
+OPTIONS:
+install Install generic kernel
+upgrade Upgrade generic kernel removing the old one
+generic Download generic kernel and also create an initrd
+
+Copyright (C) 2020-2024 Dimitris Tzemos <dijemos@gmail.com>
+This program is free software: you can redistribute it and/or modify it under the terms 
+of the GNU General Public License as published by the Free Software Foundation, 
+either version 2 of the License, or (at your option) any later version.
+This program is distributed in the hope that it will be useful, 
+but WITHOUT ANY WARRANTY; without even the implied warranty 
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License at <http://www.gnu.org/licenses/> for more details.

@@ -2,9 +2,9 @@
 
 pkgname=install-upgrade-kernel
 pkgver=3.0
-pkgrel=4dj
+pkgrel=6dj
 arch=noarch
-source=(install-upgrade-kernel-$pkgver.tar.gz)
+source=(install-upgrade-kernel-$pkgver.tar.bz2)
 docs=("readme" "copying" "authors")
 options=('nosrcpack')
 

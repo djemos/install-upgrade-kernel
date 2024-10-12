@@ -138,7 +138,8 @@ if [ -z "$startdir" ]; then
 fi
 
 #moduleslist="squashfs:overlay:loop:xhci-pci:ohci-pci:ehci-pci:xhci-hcd:uhci-hcd:ehci-hcd:mmc-core:mmc-block:sdhci:sdhci-pci:sdhci-acpi:usb-storage:hid:usbhid:i2c-hid:hid-generic:hid-apple:hid-asus:hid-cherry:hid-logitech:hid-logitech-dj:hid-logitech-hidpp:hid-lenovo:hid-microsoft:hid_multitouch:jbd2:mbcache:crc32c-intel:ext3:ext4:isofs:fat:nls_cp437:nls_iso8859-1:msdos:vfat:ntfs"
-moduleslist="loop:xhci-pci:ohci-pci:ehci-pci:xhci-hcd:uhci-hcd:ehci-hcd:mmc-core:mmc-block:sdhci:sdhci-pci:sdhci-acpi:usb-storage:hid:usbhid:i2c-hid:hid-generic:hid-apple:hid-asus:hid-cherry:hid-logitech:hid-logitech-dj:hid-logitech-hidpp:hid-lenovo:hid-microsoft:hid_multitouch:mptbase:mptscsih:mptspi:jbd2:mbcache:crc32c_intel:crc32c_generic:fuse:ext2:ext3:ext4:xfs:reiserfs:jfs:btrfs:isofs:fat:nls_cp437:nls_iso8859-1:msdos:vfat:ntfs"
+#moduleslist="squashfs:overlay:efivarfs:loop:xhci-pci:ohci-pci:ehci-pci:xhci-hcd:uhci-hcd:ehci-hcd:mmc-core:mmc-block:sdhci:sdhci-pci:sdhci-acpi:usb-storage:hid:usbhid:i2c-hid:hid-generic:hid-apple:hid-asus:hid-cherry:hid-logitech:hid-logitech-dj:hid-logitech-hidpp:hid-lenovo:hid-microsoft:hid_multitouch:mptbase:mptscsih:mptspi:jbd2:mbcache:crc32c_intel:crc32c_generic:fuse:ext2:ext3:ext4:xfs:reiserfs:jfs:btrfs:isofs:fat:nls_cp437:nls_iso8859-1:msdos:vfat:ntfs"
+moduleslist="squashfs:overlay:loop:efivarfs:xhci-pci:ohci-pci:ehci-pci:xhci-hcd:uhci-hcd:ehci-hcd:mmc-core:mmc-block:sdhci:sdhci-pci:sdhci-acpi:usb-storage:hid:usbhid:i2c-hid:hid-generic:hid-apple:hid-asus:hid-cherry:hid-logitech:hid-logitech-dj:hid-logitech-hidpp:hid-lenovo:hid-microsoft:hid_multitouch:mbcache:jbd2:mptscsih:mptspi:jbd:crc32c_intel:crc32c_generic:fuse:ext2:ext3:ext4:xfs:reiserfs:jfs:btrfs:isofs:fat:nls_cp437:nls_iso8859-1:msdos:vfat:ntfs:exfat:virtio_ring:virtio:virtio_blk:virtio_balloon:virtio_pci:virtio_pci_modern_dev:virtio_net:zstd_compress:lz4hc_compress:lz4_compress:rtsx_pci:rtsx_pci_sdmmc:uas"
 
 #clear
 #packages_dir contain packages.txz
@@ -196,8 +197,8 @@ if [ "$flag" == "install" ]; then
 		echo "creating /boot/initrd-${kv}-${flagr}.gz"
 		mkinitrd -c -f $flagf -u -w $WAIT -o /boot/initrd-${kv}-generic.gz -r UUID=$ROOTUUID -k $kv  -m $moduleslist >/dev/null 2>&1
 		rm -rf /boot/initrd-tree/
-	else
-		rm 	/boot/initrd*.gz >/dev/null 2>&1
+	#else
+	#	rm 	/boot/initrd*.gz >/dev/null 2>&1
 	fi
 	rm /boot/vmlinuz-huge /boot/vmlinuz-huge-smp /boot/vmlinuz-generic >/dev/null 2>&1
 	if [ -f /usr/sbin/update-grub ]; then
@@ -213,8 +214,8 @@ elif [ "$flag" == "upgrade" ]; then
 		echo "creating /boot/initrd-${kv}-${flagr}.gz"
 		mkinitrd -c -f $flagf -u -w $WAIT -o /boot/initrd-${kv}-generic.gz -r UUID=$ROOTUUID -k $kv  -m $moduleslist >/dev/null 2>&1
 		rm -rf /boot/initrd-tree/
-	else
-		rm 	/boot/initrd*.gz >/dev/null 2>&1
+	#else
+	#	rm 	/boot/initrd*.gz >/dev/null 2>&1
 	fi
 	rm /boot/vmlinuz-huge /boot/vmlinuz-huge-smp /boot/vmlinuz-generic >/dev/null 2>&1
 
