@@ -15,7 +15,7 @@ tar -cvjSf install-upgrade-kernel.tar.bz2 install-upgrade-kernel
 fakeroot slkbuild -X
 
 To install the package type:
-sudo spkg install-upgrade-kernel-3.0-noarch-6dj.txz
+sudo spkg install-upgrade-kernel-3.0-noarch-7dj.txz
 
 Running
 sudo install-upgrade-kernel with no parameters will get the following help screen.
