@@ -191,6 +191,7 @@ fi
 
 if [ "$flag" == "install" ]; then
 	installpkg $packagesdirectory/*
+	rm /boot/initrd*.gz >/dev/null 2>&1
 	#kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | sed s/^[^0-9]*//`
 	kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | cut -f2 -d'-'`
 	if [ "$flagr" == "generic" ]; then
@@ -208,6 +209,7 @@ if [ "$flag" == "install" ]; then
 	rm -rf $packagesdirectory
 elif [ "$flag" == "upgrade" ]; then
 	upgradepkg $packagesdirectory/*
+	rm /boot/initrd*.gz >/dev/null 2>&1
 	#kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | sed s/^[^0-9]*//`
 	kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | cut -f2 -d'-'`
 	if [ "$flagr" == "generic" ];then
