@@ -145,8 +145,8 @@ moduleslist="squashfs:overlay:loop:efivarfs:xhci-pci:ohci-pci:ehci-pci:xhci-hcd:
 #packages_dir contain packages.txz
 packagesdirectory=$startdir/packages_dir
 mkdir -p $packagesdirectory
-sudo slapt-get --clean
-sudo slapt-get -u
+slapt-get --clean
+slapt-get -u
 if [ "$flagr" == "generic" ]; then
 	if [ `uname -m` == "x86_64" ]; then
 		slapt-get -i --reinstall -d kernel-headers kernel-generic
