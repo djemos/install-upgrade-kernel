@@ -16,7 +16,7 @@ moduleslist="squashfs:overlay:loop:efivarfs:xhci-pci:ohci-pci:ehci-pci:xhci-hcd:
 
 rm /boot/initrd*.gz >/dev/null 2>&1
 
-mkinitrd -c -o /boot/initrd-${kv}-generic.gz -k $kv -m $moduleslist >/dev/null 2>&1
+mkinitrd -c -o /boot/initrd-${kv}.gz -k $kv -m $moduleslist >/dev/null 2>&1
 rm -rf /boot/initrd-tree/
 if [ -f /usr/sbin/update-grub ]; then
   echo "updating grub"

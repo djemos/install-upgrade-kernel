@@ -195,8 +195,8 @@ if [ "$flag" == "install" ]; then
 	#kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | sed s/^[^0-9]*//`
 	kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | cut -f2 -d'-'`
 	if [ "$flagr" == "generic" ]; then
-		echo "creating /boot/initrd-${kv}-${flagr}.gz"
-		mkinitrd -c -f $flagf -u -w $WAIT -o /boot/initrd-${kv}-generic.gz -r UUID=$ROOTUUID -k $kv  -m $moduleslist >/dev/null 2>&1
+		echo "creating /boot/initrd-${kv}.gz"
+		mkinitrd -c -f $flagf -u -w $WAIT -o /boot/initrd-${kv}.gz -r UUID=$ROOTUUID -k $kv  -m $moduleslist >/dev/null 2>&1
 		rm -rf /boot/initrd-tree/
 	#else
 	#	rm 	/boot/initrd*.gz >/dev/null 2>&1
@@ -213,8 +213,8 @@ elif [ "$flag" == "upgrade" ]; then
 	#kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | sed s/^[^0-9]*//`
 	kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | cut -f2 -d'-'`
 	if [ "$flagr" == "generic" ];then
-		echo "creating /boot/initrd-${kv}-${flagr}.gz"
-		mkinitrd -c -f $flagf -u -w $WAIT -o /boot/initrd-${kv}-generic.gz -r UUID=$ROOTUUID -k $kv  -m $moduleslist >/dev/null 2>&1
+		echo "creating /boot/initrd-${kv}.gz"
+		mkinitrd -c -f $flagf -u -w $WAIT -o /boot/initrd-${kv}.gz -r UUID=$ROOTUUID -k $kv  -m $moduleslist >/dev/null 2>&1
 		rm -rf /boot/initrd-tree/
 	#else
 	#	rm 	/boot/initrd*.gz >/dev/null 2>&1
