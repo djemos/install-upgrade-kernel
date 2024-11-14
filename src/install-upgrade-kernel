@@ -36,7 +36,7 @@ AUTHOR='Dimitris Tzemos - dijemos@gmail.com'
 LICENCE='GPL v3+'
 SCRIPT=$(basename "$0")
 SCRIPT=$(readlink -f "$SCRIPT")
-VER=4.0
+VER=5.0
 
 init(){
 
@@ -191,15 +191,14 @@ fi
 
 if [ "$flag" == "install" ]; then
 	installpkg $packagesdirectory/*
-	rm /boot/initrd*.gz >/dev/null 2>&1
+	rm /boot/vmlinuz-huge /boot/vmlinuz-huge-smp /boot/vmlinuz-generic >/dev/null 2>&1
+	rm -rf /boot/initrd* >/dev/null 2>&1
 	#kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | sed s/^[^0-9]*//`
 	kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | cut -f2 -d'-'`
 	if [ "$flagr" == "generic" ]; then
 		echo "creating /boot/initrd-${kv}.gz"
 		mkinitrd -c -f $flagf -u -w $WAIT -o /boot/initrd-${kv}.gz -r UUID=$ROOTUUID -k $kv  -m $moduleslist >/dev/null 2>&1
 		rm -rf /boot/initrd-tree/
-	#else
-	#	rm 	/boot/initrd*.gz >/dev/null 2>&1
 	fi
 	rm /boot/vmlinuz-huge /boot/vmlinuz-huge-smp /boot/vmlinuz-generic >/dev/null 2>&1
 	if [ -f /usr/sbin/update-grub ]; then
@@ -209,15 +208,14 @@ if [ "$flag" == "install" ]; then
 	rm -rf $packagesdirectory
 elif [ "$flag" == "upgrade" ]; then
 	upgradepkg $packagesdirectory/*
-	rm /boot/initrd*.gz >/dev/null 2>&1
+	rm /boot/vmlinuz-huge /boot/vmlinuz-huge-smp /boot/vmlinuz-generic >/dev/null 2>&1
+	rm -rf /boot/initrd* >/dev/null 2>&1
 	#kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | sed s/^[^0-9]*//`
 	kv=`ls -l /boot/vmlinuz | cut -f2 -d'>' | cut -f2 -d'-'`
 	if [ "$flagr" == "generic" ];then
 		echo "creating /boot/initrd-${kv}.gz"
 		mkinitrd -c -f $flagf -u -w $WAIT -o /boot/initrd-${kv}.gz -r UUID=$ROOTUUID -k $kv  -m $moduleslist >/dev/null 2>&1
 		rm -rf /boot/initrd-tree/
-	#else
-	#	rm 	/boot/initrd*.gz >/dev/null 2>&1
 	fi
 	rm /boot/vmlinuz-huge /boot/vmlinuz-huge-smp /boot/vmlinuz-generic >/dev/null 2>&1
 
